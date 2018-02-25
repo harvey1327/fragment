@@ -37,10 +37,18 @@ public class HarveyBalTest{
     }
 
     @Test
-    public void testFragmentGetOverlapReturnsEmpty(){
+    public void testFragmentGetOverlapReturnsEmptyBasic(){
         HarveyBal hb = new HarveyBal();
         HarveyBal.Fragment fragmentPrime = hb.new Fragment("ABCD");
         HarveyBal.Fragment fragmentBeta = hb.new Fragment("ZBCY");
+        Assert.assertEquals("", fragmentPrime.getOverlap(fragmentBeta));
+    }
+
+    @Test
+    public void testFragmentGetOverlapReturnsEmptyMedium(){
+        HarveyBal hb = new HarveyBal();
+        HarveyBal.Fragment fragmentPrime = hb.new Fragment("ABCDEF");
+        HarveyBal.Fragment fragmentBeta = hb.new Fragment("ZEFABZ");
         Assert.assertEquals("", fragmentPrime.getOverlap(fragmentBeta));
     }
 
