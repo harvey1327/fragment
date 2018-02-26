@@ -3,7 +3,6 @@ package fragment.submissions;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -12,10 +11,15 @@ public class HarveyBal {
 
     public static void main(String args[]) throws IOException{
         try(BufferedReader in = new BufferedReader(new FileReader(args[0]))) {
-            List<Fragment> fragmentList = in.lines()
-                    .map(line -> new Fragment(line))
+
+            //Convert each line in BufferedReader to a Page
+            List<Page> pageList = in.lines()
+                    .map(Page::new)
                     .collect(Collectors.toList());
-            System.out.println(fragmentList);
+
+            //From Fragments in page, Loop for overlap, if true merge together and replace into list?
+
+            System.out.println(pageList);
         }
     }
 
@@ -41,29 +45,22 @@ public class HarveyBal {
 //        }
 //    }
 
-    public static class Case {
-
-        private List<String> caseList = new ArrayList<>();
-
-        public List<String> getCaseList(){
-            return caseList;
-        }
-
-        public void addCase(String s){
-            caseList.add(s);
-        }
-    }
-
     public static class Page {
 
-        private List<Fragment> fragmentList = new ArrayList<>();
+        private List<Fragment> fragmentList;
+
+        public Page(String line){
+            fragmentList = Arrays.stream(line.split(";"))
+                    .map(Fragment::new)
+                    .collect(Collectors.toList());
+        }
 
         public List<Fragment> getFragmentList(){
             return fragmentList;
         }
 
-        public void addFragment(Fragment fragment){
-            fragmentList.add(fragment);
+        public String toString(){
+            return getFragmentList().toString();
         }
     }
 
@@ -85,7 +82,7 @@ public class HarveyBal {
             String stringPrime = this.getInternal();
             String stringBeta = fragmentBeta.getInternal();
             //Check Right
-            for( int i = Math.min(stringPrime.length(), stringBeta.length()); ; i--){
+            for( int i = Math.min(stringPrime.length(), stringBeta.length()); i>=0; i--){
                 if(stringPrime.endsWith(stringBeta.substring(0,i))){
                     resultRight = stringBeta.substring(0,i);
                     break;

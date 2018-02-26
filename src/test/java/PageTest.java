@@ -5,9 +5,8 @@ import org.junit.Test;
 public class PageTest {
 
     @Test
-    public void testPageReturnsListLengthOne(){
-        HarveyBal.Page page = new HarveyBal.Page();
-        page.addFragment(new HarveyBal.Fragment("String"));
-        Assert.assertTrue(page.getFragmentList().size()==1);
+    public void testPageReturnsListLengthThree(){
+        HarveyBal.Page page = new HarveyBal.Page("String1; String2; String3");
+        Assert.assertTrue(page.getFragmentList().size()==3);
     }
 }
