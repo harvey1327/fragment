@@ -3,6 +3,7 @@ package fragment.submissions;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -11,16 +12,21 @@ public class HarveyBal {
 
     public static void main(String args[]) throws IOException{
         try(BufferedReader in = new BufferedReader(new FileReader(args[0]))) {
-//            in.lines()
-//                    .map(HarveyBal::reassemble)
-//                    .forEach(System.out::println);
+            List<Fragment> fragmentList = in.lines()
+                    .map(line -> new Fragment(line))
+                    .collect(Collectors.toList());
+            System.out.println(fragmentList);
         }
     }
 
-//    static String reassemble(String line){
+//    public static List<Fragment> convertToFragment(String line){
 //        List<String> fragments = Arrays.asList(line.split(";"));
-//        String result = findOverlap(fragments);
-//        return result;
+//        List<Fragment> fragmentList = new ArrayList<>();
+//        for(String fragmentString: fragments){
+//            Fragment fragment = new Fragment(fragmentString);
+//            fragmentList.add(fragment);
+//        }
+//        return fragmentList;
 //    }
 
 //    static String findOverlap(List<String> fragments){
@@ -35,7 +41,33 @@ public class HarveyBal {
 //        }
 //    }
 
-    public class Fragment {
+    public static class Case {
+
+        private List<String> caseList = new ArrayList<>();
+
+        public List<String> getCaseList(){
+            return caseList;
+        }
+
+        public void addCase(String s){
+            caseList.add(s);
+        }
+    }
+
+    public static class Page {
+
+        private List<Fragment> fragmentList = new ArrayList<>();
+
+        public List<Fragment> getFragmentList(){
+            return fragmentList;
+        }
+
+        public void addFragment(Fragment fragment){
+            fragmentList.add(fragment);
+        }
+    }
+
+    public static class Fragment {
 
         private String internal;
 
@@ -71,6 +103,10 @@ public class HarveyBal {
             } else {
                 return resultLeft;
             }
+        }
+
+        public String toString(){
+            return getInternal();
         }
     }
 
