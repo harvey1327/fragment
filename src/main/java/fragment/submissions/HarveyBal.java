@@ -18,7 +18,22 @@ public class HarveyBal {
                     .collect(Collectors.toList());
 
             //From Fragments in page, Loop for overlap, if true merge together and replace into list?
+            for(Page page: pageList){
+                List<Fragment> fragmentList=page.getFragmentList();
+                for(int i=0;i<=fragmentList.size(); i++){
+                    Fragment fragmentPrime = fragmentList.get(i);
+                    for(int j=0;j<=fragmentList.size(); j++){
+                        Fragment fragmentBeta = fragmentList.get(j);
+                        if(i!=j){
+                            //Check for overlap between Prime and Beta
+                            String overlap = fragmentPrime.getOverlap(fragmentBeta);
+                            if(!overlap.equals("")){
 
+                            }
+                        }
+                    }
+                }
+            }
 
             System.out.println(pageList);
         }
