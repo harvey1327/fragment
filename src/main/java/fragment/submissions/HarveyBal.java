@@ -3,6 +3,7 @@ package fragment.submissions;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -37,6 +38,16 @@ public class HarveyBal {
 
             System.out.println(pageList);
         }
+    }
+
+    public static List<Fragment> replace(Fragment a, Fragment b, Fragment newFragment, List<Fragment> fragmentList){
+        List<Fragment> newList = fragmentList.stream()
+                .map(fragment -> new Fragment(fragment.getInternal()))
+                .collect(Collectors.toList());
+        newList.removeIf(fragment -> fragment.getInternal().equals(a.getInternal()));
+        newList.removeIf(fragment -> fragment.getInternal().equals(b.getInternal()));
+        newList.add(newFragment);
+        return newList;
     }
 
     public static class Page {
