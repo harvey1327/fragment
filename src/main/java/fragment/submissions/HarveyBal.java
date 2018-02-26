@@ -19,31 +19,10 @@ public class HarveyBal {
 
             //From Fragments in page, Loop for overlap, if true merge together and replace into list?
 
+
             System.out.println(pageList);
         }
     }
-
-//    public static List<Fragment> convertToFragment(String line){
-//        List<String> fragments = Arrays.asList(line.split(";"));
-//        List<Fragment> fragmentList = new ArrayList<>();
-//        for(String fragmentString: fragments){
-//            Fragment fragment = new Fragment(fragmentString);
-//            fragmentList.add(fragment);
-//        }
-//        return fragmentList;
-//    }
-
-//    static String findOverlap(List<String> fragments){
-//        for(int i = 0; i<fragments.size(); i++){
-//            String fragmentAlpha = fragments.get(i);
-//            for(int j = 0; j<fragments.size(); j++){
-//                String fragmentBeta = fragments.get(i);
-//                if(i!=j){
-//
-//                }
-//            }
-//        }
-//    }
 
     public static class Page {
 
