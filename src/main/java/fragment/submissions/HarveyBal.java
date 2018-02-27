@@ -16,29 +16,29 @@ public class HarveyBal {
                     .map(Page::new)
                     .collect(Collectors.toList());
 
-            //From Fragments in page, Loop for overlap, if true merge together and replace into list?
-//            for(Page page: pageList){
-//                List<Fragment> fragmentList=page.getFragmentList();
-//                for(int i=0;i<=fragmentList.size(); i++){
-//                    Fragment fragmentAlpha = fragmentList.get(i);
-//                    for(int j=0;j<=fragmentList.size(); j++){
-//                        Fragment fragmentBeta = fragmentList.get(j);
-//                        if(i!=j){
-//                            //Check for overlap between Alpha and Beta
-//                            Merger merger = new Merger(fragmentAlpha);
-//                            MergerMeta meta = merger.processOverlap(fragmentBeta);
-//                        }
-//                    }
-//                }
-//            }
-
             pageList.stream().map(page -> {
                 List<Fragment> fragmentList = page.getFragmentList();
-                //Process List
 
+                while(fragmentList.size()!=1){
+                    Fragment fragmentAlpha = fragmentList.get(0);
+                    Merger merger = new Merger(fragmentAlpha);
+
+                    for(Fragment fragmentBeta : fragmentList){
+                        if(!fragmentAlpha.equals(fragmentBeta)){
+                           MergerMeta meta = merger.processOverlap(fragmentBeta);
+                           if(meta!=null){
+                               merger.addToMap(meta, fragmentBeta);
+                           }
+                        }
+                    }
+
+                    MergerMeta maxMeta = merger.getMaxMeta();
+                    Fragment maxFragment = merger.getMaxFragment();
+                    Fragment newFragment = merger.mergeFragments(maxFragment, maxMeta);
+                    fragmentList = replace(fragmentAlpha, maxFragment, newFragment, fragmentList);
+                }
                 //Assign String to Page
-
-                //Return Page String
+                page.setResult(fragmentList.get(0).getInternal());
                 return page.getResult();
             }).forEach(System.out::println);
 
@@ -88,33 +88,33 @@ public class HarveyBal {
 
             if(metaRight!=null && metaLeft!=null){
                 if(metaRight.getLength() > metaLeft.getLength()){
-                    addToMap(metaRight, fragmentBeta);
                    return metaRight;
                 } else {
-                    addToMap(metaLeft, fragmentBeta);
                     return metaLeft;
                 }
             } else if(metaRight!=null){
-                addToMap(metaRight, fragmentBeta);
                 return metaRight;
             } else if(metaLeft!=null){
-                addToMap(metaLeft, fragmentBeta);
                 return metaLeft;
             } else {
                 return null;
             }
         }
 
-        private void addToMap(MergerMeta meta, Fragment beta){
+        public void addToMap(MergerMeta meta, Fragment beta){
             map.put(meta, beta);
         }
 
 
-        public Fragment getMax(){
-            MergerMeta max = map.keySet().stream()
+        public Fragment getMaxFragment(){
+            MergerMeta max = getMaxMeta();
+            return map.get(max);
+        }
+
+        public MergerMeta getMaxMeta(){
+            return map.keySet().stream()
                     .max(Comparator.comparing(MergerMeta::getLength))
                     .get();
-            return map.get(max);
         }
 
         public Fragment mergeFragments(Fragment fragmentBeta, MergerMeta meta){

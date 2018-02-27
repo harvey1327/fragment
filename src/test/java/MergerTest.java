@@ -125,7 +125,7 @@ public class MergerTest {
     }
 
     @Test
-    public void testGetMaxReturnsMaxLengthObject(){
+    public void testGetMaxFragmentReturnsMaxLengthObject(){
         HarveyBal.Fragment fragmentPrime = new HarveyBal.Fragment("ABCDEF");
         HarveyBal.Fragment fragmentBeta1 = new HarveyBal.Fragment("EFG");
         HarveyBal.Fragment fragmentBeta2 = new HarveyBal.Fragment("DEFGH");
@@ -136,7 +136,31 @@ public class MergerTest {
         HarveyBal.MergerMeta meta2 = merger.processOverlap(fragmentBeta2);
         HarveyBal.MergerMeta meta3 = merger.processOverlap(fragmentBeta3);
 
-        HarveyBal.Fragment actual = merger.getMax();
+        merger.addToMap(meta1, fragmentBeta1);
+        merger.addToMap(meta2, fragmentBeta2);
+        merger.addToMap(meta3, fragmentBeta3);
+
+        HarveyBal.Fragment actual = merger.getMaxFragment();
         Assert.assertEquals(fragmentBeta3, actual);
+    }
+
+    @Test
+    public void testGetMaxMetaReturnsMaxLengthObject(){
+        HarveyBal.Fragment fragmentPrime = new HarveyBal.Fragment("ABCDEF");
+        HarveyBal.Fragment fragmentBeta1 = new HarveyBal.Fragment("EFG");
+        HarveyBal.Fragment fragmentBeta2 = new HarveyBal.Fragment("DEFGH");
+        HarveyBal.Fragment fragmentBeta3 = new HarveyBal.Fragment("ZABCDE");
+
+        HarveyBal.Merger merger = new HarveyBal.Merger(fragmentPrime);
+        HarveyBal.MergerMeta meta1 = merger.processOverlap(fragmentBeta1);
+        HarveyBal.MergerMeta meta2 = merger.processOverlap(fragmentBeta2);
+        HarveyBal.MergerMeta meta3 = merger.processOverlap(fragmentBeta3);
+
+        merger.addToMap(meta1, fragmentBeta1);
+        merger.addToMap(meta2, fragmentBeta2);
+        merger.addToMap(meta3, fragmentBeta3);
+
+        HarveyBal.MergerMeta actual = merger.getMaxMeta();
+        Assert.assertEquals(meta3, actual);
     }
 }
