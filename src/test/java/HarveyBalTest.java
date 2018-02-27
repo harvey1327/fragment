@@ -5,7 +5,7 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HarveyTest {
+public class HarveyBalTest {
 
     @Test
     public void testReplaceReturnsNewList(){
