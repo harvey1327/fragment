@@ -16,16 +16,18 @@ public class HarveyBal {
                     .map(Page::new)
                     .collect(Collectors.toList());
 
-            //
+            //Stream each page to be processed
             pageList.stream().map(page -> {
                 List<Fragment> fragmentList = page.getFragmentList();
 
                 while(fragmentList.size()!=1){
+                    //Get largest fragment as alpha
                     Fragment fragmentAlpha = fragmentList.stream()
                             .max(Comparator.comparing(fragment -> fragment.getInternal().length()))
                             .get();
-                    Merger merger = new Merger(fragmentAlpha);
 
+                    //Find potential overlaps with beta against alpha
+                    Merger merger = new Merger(fragmentAlpha);
                     for(Fragment fragmentBeta : fragmentList){
                         if(!fragmentAlpha.equals(fragmentBeta)){
                            MergerMeta meta = merger.processOverlap(fragmentBeta);
@@ -35,12 +37,15 @@ public class HarveyBal {
                         }
                     }
 
+                    //Get largest overlapping fragment with its meta
                     MergerMeta maxMeta = merger.getMaxMeta();
-                    Fragment maxFragment = merger.getMaxFragment();
-                    Fragment newFragment = merger.mergeFragments(maxFragment, maxMeta);
-                    fragmentList = replace(fragmentAlpha, maxFragment, newFragment, fragmentList);
+                    Fragment maxBetaFragment = merger.getMaxFragment();
+                    //Merge alpha with the largest beta
+                    Fragment newFragment = merger.mergeFragments(maxBetaFragment, maxMeta);
+                    //Update the current list with merged alpha+beta and remove alpha, beta from list
+                    fragmentList = replace(fragmentAlpha, maxBetaFragment, newFragment, fragmentList);
                 }
-                //Assign String to Page
+                //Assign remaining fragment to Page
                 page.setResult(fragmentList.get(0).getInternal());
                 return page.getResult();
             }).forEach(System.out::println);
@@ -73,7 +78,7 @@ public class HarveyBal {
 
             List<MergerMeta> metaList = new ArrayList<>();
 
-            //Check Right
+            //Check Right of alpha
             for( int i = Math.min(stringAlpha.length(), stringBeta.length()); i>=2; i--){
                 String right = stringBeta.substring(0,i);
                 if(stringAlpha.endsWith(right) && right.length() >=2){
@@ -81,7 +86,7 @@ public class HarveyBal {
                     break;
                 }
             }
-            //Check Left
+            //Check Left of alpha
             for( int i = 0; i<stringBeta.length(); i++){
                 String left = stringBeta.substring(i,stringBeta.length());
                 if(stringAlpha.startsWith(left) && left.length() >=2){
@@ -89,12 +94,13 @@ public class HarveyBal {
                     break;
                 }
             }
-            //Check Middle
+            //Check Middle of alpha
             if(stringAlpha.contains(stringBeta)){
                 int beginIndex = stringAlpha.indexOf(stringBeta);
                 metaList.add(new MergerMeta(beginIndex, beginIndex+stringBeta.length(), MergerMeta.Type.MIDDLE));
             }
 
+            //Return largest overlap against alpha
             if(metaList.size()>0){
                 return metaList.stream()
                         .max(Comparator.comparing(MergerMeta::getLength))
@@ -139,6 +145,7 @@ public class HarveyBal {
         }
     }
 
+    //Data class to hold information regarding overlap for fragments
     public static class MergerMeta {
 
         public enum Type{
@@ -176,6 +183,7 @@ public class HarveyBal {
         }
     }
 
+    //Data class to hold list of fragments, i.e line in file
     public static class Page {
 
         private List<Fragment> fragmentList;
@@ -204,6 +212,7 @@ public class HarveyBal {
         }
     }
 
+    //Data class to hold individual fragments
     public static class Fragment {
 
         private String internal;
