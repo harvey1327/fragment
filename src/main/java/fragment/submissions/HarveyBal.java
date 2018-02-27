@@ -68,15 +68,13 @@ public class HarveyBal {
             String stringAlpha = this.fragmentAlpha.getInternal();
             String stringBeta = fragmentBeta.getInternal();
 
-            MergerMeta metaRight = null;
-            MergerMeta metaLeft = null;
-            MergerMeta metaMiddle = null;
+            List<MergerMeta> metaList = new ArrayList<>();
 
             //Check Right
             for( int i = Math.min(stringAlpha.length(), stringBeta.length()); i>=2; i--){
                 String right = stringBeta.substring(0,i);
                 if(stringAlpha.endsWith(right) && right.length() >=2){
-                    metaRight = new MergerMeta(0,i, MergerMeta.Type.RIGHT);
+                    metaList.add(new MergerMeta(0,i, MergerMeta.Type.RIGHT));
                     break;
                 }
             }
@@ -84,29 +82,24 @@ public class HarveyBal {
             for( int i = 0; i<stringBeta.length(); i++){
                 String left = stringBeta.substring(i,stringBeta.length());
                 if(stringAlpha.startsWith(left) && left.length() >=2){
-                    metaLeft = new MergerMeta(i,stringBeta.length(), MergerMeta.Type.LEFT);
+                    metaList.add(new MergerMeta(i,stringBeta.length(), MergerMeta.Type.LEFT));
                     break;
                 }
             }
             //Check Middle
             if(stringAlpha.contains(stringBeta)){
                 int beginIndex = stringAlpha.indexOf(stringBeta);
-                metaLeft = new MergerMeta(beginIndex, beginIndex+stringBeta.length(), MergerMeta.Type.MIDDLE);
+                metaList.add(new MergerMeta(beginIndex, beginIndex+stringBeta.length(), MergerMeta.Type.MIDDLE));
             }
 
-            if(metaRight!=null && metaLeft!=null){
-                if(metaRight.getLength() > metaLeft.getLength()){
-                   return metaRight;
-                } else {
-                    return metaLeft;
-                }
-            } else if(metaRight!=null){
-                return metaRight;
-            } else if(metaLeft!=null){
-                return metaLeft;
+            if(metaList.size()>0){
+                return metaList.stream()
+                        .max(Comparator.comparing(MergerMeta::getLength))
+                        .get();
             } else {
                 return null;
             }
+
         }
 
         public void addToMap(MergerMeta meta, Fragment beta){
