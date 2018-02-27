@@ -173,32 +173,6 @@ public class HarveyBal {
             return internal;
         }
 
-        public String getOverlap(Fragment fragmentBeta){
-            String resultRight = "";
-            String resultLeft = "";
-            String stringPrime = this.getInternal();
-            String stringBeta = fragmentBeta.getInternal();
-            //Check Right
-            for( int i = Math.min(stringPrime.length(), stringBeta.length()); i>=0; i--){
-                if(stringPrime.endsWith(stringBeta.substring(0,i))){
-                    resultRight = stringBeta.substring(0,i);
-                    break;
-                }
-            }
-            //Check Left
-            for( int i = 0; i<stringBeta.length(); i++){
-                if(stringPrime.startsWith(stringBeta.substring(i,stringBeta.length()))){
-                    resultLeft = stringBeta.substring(i,stringBeta.length());
-                    break;
-                }
-            }
-            if(resultRight.length() > resultLeft.length()){
-                return resultRight;
-            } else {
-                return resultLeft;
-            }
-        }
-
         public String toString(){
             return getInternal();
         }
