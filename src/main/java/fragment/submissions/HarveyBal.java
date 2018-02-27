@@ -16,11 +16,14 @@ public class HarveyBal {
                     .map(Page::new)
                     .collect(Collectors.toList());
 
+            //
             pageList.stream().map(page -> {
                 List<Fragment> fragmentList = page.getFragmentList();
 
                 while(fragmentList.size()!=1){
-                    Fragment fragmentAlpha = fragmentList.get(0);
+                    Fragment fragmentAlpha = fragmentList.stream()
+                            .max(Comparator.comparing(fragment -> fragment.getInternal().length()))
+                            .get();
                     Merger merger = new Merger(fragmentAlpha);
 
                     for(Fragment fragmentBeta : fragmentList){
