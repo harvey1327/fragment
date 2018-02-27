@@ -70,6 +70,7 @@ public class HarveyBal {
 
             MergerMeta metaRight = null;
             MergerMeta metaLeft = null;
+            MergerMeta metaMiddle = null;
 
             //Check Right
             for( int i = Math.min(stringAlpha.length(), stringBeta.length()); i>=2; i--){
@@ -88,6 +89,10 @@ public class HarveyBal {
                 }
             }
             //Check Middle
+            if(stringAlpha.contains(stringBeta)){
+                int beginIndex = stringAlpha.indexOf(stringBeta);
+                metaLeft = new MergerMeta(beginIndex, beginIndex+stringBeta.length(), MergerMeta.Type.MIDDLE);
+            }
 
             if(metaRight!=null && metaLeft!=null){
                 if(metaRight.getLength() > metaLeft.getLength()){
