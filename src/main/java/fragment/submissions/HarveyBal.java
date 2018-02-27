@@ -73,18 +73,21 @@ public class HarveyBal {
 
             //Check Right
             for( int i = Math.min(stringAlpha.length(), stringBeta.length()); i>=2; i--){
-                if(stringAlpha.endsWith(stringBeta.substring(0,i))){
+                String right = stringBeta.substring(0,i);
+                if(stringAlpha.endsWith(right) && right.length() >=2){
                     metaRight = new MergerMeta(0,i, MergerMeta.Type.RIGHT);
                     break;
                 }
             }
             //Check Left
             for( int i = 0; i<stringBeta.length(); i++){
-                if(stringAlpha.startsWith(stringBeta.substring(i,stringBeta.length()))){
+                String left = stringBeta.substring(i,stringBeta.length());
+                if(stringAlpha.startsWith(left) && left.length() >=2){
                     metaLeft = new MergerMeta(i,stringBeta.length(), MergerMeta.Type.LEFT);
                     break;
                 }
             }
+            //Check Middle
 
             if(metaRight!=null && metaLeft!=null){
                 if(metaRight.getLength() > metaLeft.getLength()){
