@@ -137,7 +137,8 @@ public class HarveyBal {
 
         public enum Type{
             LEFT,
-            RIGHT
+            RIGHT,
+            MIDDLE
         }
 
         int start;

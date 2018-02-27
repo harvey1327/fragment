@@ -5,6 +5,46 @@ import org.junit.Test;
 public class MergerTest {
 
     @Test
+    public void testMergerMergeFragmentsMIDDLEReturnsFragment(){
+        HarveyBal.Fragment fragmentPrime = new HarveyBal.Fragment("ABC DEFC ");
+        HarveyBal.Fragment fragmentBeta = new HarveyBal.Fragment("C D");
+
+        HarveyBal.Merger merger = new HarveyBal.Merger(fragmentPrime);
+        HarveyBal.MergerMeta meta = merger.processOverlap(fragmentBeta);
+        HarveyBal.Fragment actual = merger.mergeFragments(fragmentBeta, meta);
+        HarveyBal.Fragment expected = new HarveyBal.Fragment("ABC DEFC ");
+        Assert.assertEquals(actual.getInternal(), expected.getInternal());
+    }
+
+    @Test
+    public void testMergerProcessOverlapReturnsMetaFromMiddlePotentialRight(){
+        HarveyBal.Fragment fragmentPrime = new HarveyBal.Fragment("ABC DEFC ");
+        HarveyBal.Fragment fragmentBeta = new HarveyBal.Fragment("C D");
+
+        HarveyBal.Merger merger = new HarveyBal.Merger(fragmentPrime);
+        HarveyBal.MergerMeta actual = merger.processOverlap(fragmentBeta);
+        HarveyBal.MergerMeta expected = new HarveyBal.MergerMeta(2,5, HarveyBal.MergerMeta.Type.MIDDLE);
+        Assert.assertEquals(actual.getStart(),expected.getStart());
+        Assert.assertEquals(actual.getEnd(),expected.getEnd());
+        Assert.assertEquals(actual.getType(),expected.getType());
+        Assert.assertEquals(actual.getLength(),expected.getLength());
+    }
+
+    @Test
+    public void testMergerProcessOverlapReturnsMetaFromMiddlePotentialLeft(){
+        HarveyBal.Fragment fragmentPrime = new HarveyBal.Fragment("DABC DEF ");
+        HarveyBal.Fragment fragmentBeta = new HarveyBal.Fragment("C D");
+
+        HarveyBal.Merger merger = new HarveyBal.Merger(fragmentPrime);
+        HarveyBal.MergerMeta actual = merger.processOverlap(fragmentBeta);
+        HarveyBal.MergerMeta expected = new HarveyBal.MergerMeta(3,6, HarveyBal.MergerMeta.Type.MIDDLE);
+        Assert.assertEquals(actual.getStart(),expected.getStart());
+        Assert.assertEquals(actual.getEnd(),expected.getEnd());
+        Assert.assertEquals(actual.getType(),expected.getType());
+        Assert.assertEquals(actual.getLength(),expected.getLength());
+    }
+
+    @Test
     public void testMergerProcessOverlapReturnsMetaFromRight(){
         HarveyBal.Fragment fragmentPrime = new HarveyBal.Fragment("ABC");
         HarveyBal.Fragment fragmentBeta = new HarveyBal.Fragment("BCZ");
