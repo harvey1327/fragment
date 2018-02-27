@@ -123,4 +123,20 @@ public class MergerTest {
         HarveyBal.Fragment expected = new HarveyBal.Fragment("ABCDEFGH");
         Assert.assertEquals(actual.getInternal(), expected.getInternal());
     }
+
+    @Test
+    public void testGetMaxReturnsMaxLengthObject(){
+        HarveyBal.Fragment fragmentPrime = new HarveyBal.Fragment("ABCDEF");
+        HarveyBal.Fragment fragmentBeta1 = new HarveyBal.Fragment("EFG");
+        HarveyBal.Fragment fragmentBeta2 = new HarveyBal.Fragment("DEFGH");
+        HarveyBal.Fragment fragmentBeta3 = new HarveyBal.Fragment("ZABCDE");
+
+        HarveyBal.Merger merger = new HarveyBal.Merger(fragmentPrime);
+        HarveyBal.MergerMeta meta1 = merger.processOverlap(fragmentBeta1);
+        HarveyBal.MergerMeta meta2 = merger.processOverlap(fragmentBeta2);
+        HarveyBal.MergerMeta meta3 = merger.processOverlap(fragmentBeta3);
+
+        HarveyBal.Fragment actual = merger.getMax();
+        Assert.assertEquals(fragmentBeta3, actual);
+    }
 }
