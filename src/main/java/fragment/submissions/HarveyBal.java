@@ -136,6 +136,8 @@ public class HarveyBal {
             } else if(meta.getType().equals(MergerMeta.Type.LEFT)) {
                 String left = stringBeta.substring(0, meta.getStart());
                 newFragment = new Fragment(left+stringAlpha);
+            } else if(meta.getType().equals(MergerMeta.Type.MIDDLE)) {
+                newFragment = this.fragmentAlpha;
             }
             return newFragment;
         }
